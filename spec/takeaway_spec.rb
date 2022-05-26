@@ -34,15 +34,17 @@ RSpec.describe "Takeaway" do
     expect(order.select("Vegetable Spring Rolls")).to eq hash
   end
 
-  xit "creates a receipt" do
-    order = OrderCreator.new
+  it "creates a receipt" do
+    menu = Menu.new
+    order = Order.new(menu)
     order.select("Vegetable Rice")
     order.select("Vegetable Spring Rolls")
     order.select("Thai Red Curry with tofu")
-    expect(order.receipt).to eq "Vegetable Rice (2.60),
-                                Vegetable Spring Rolls (£3.00),
-                                Thai Red Curry with tofu (£6.80),
-                                Total = £12.40"
+    receipt = ["Vegetable Rice (£2.60)",
+              "Vegetable Spring Rolls (£3.00)",
+              "Thai Red Curry with tofu (£6.80)",
+              "Total (£12.40)"]
+    expect(order.receipt).to eq receipt
   end
 
   it "tells you the order has been placed" do
@@ -53,5 +55,12 @@ RSpec.describe "Takeaway" do
     order.select("Thai Red Curry with tofu")
     expect(order.complete).to eq "Thank you! Your order has been placed."
   end
-  
+
+  it "gives the total cost of the order" do
+    menu = Menu.new
+    order = Order.new(menu)
+    order.select("Vegetable Rice")
+    order.select("Vegetable Spring Rolls")
+    expect(order.total).to eq "£5.60"
+  end
 end

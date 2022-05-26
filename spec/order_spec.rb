@@ -17,12 +17,29 @@ RSpec.describe Order do
     expect(order.menu).to eq hash
   end
 
-  xit "shows your selection so far" do
-    fake_menu = double :menu, show: hash, price: "£2.60"
+  it "shows your selection so far" do
+    fake_menu = double :menu, show: hash, price: "£2.60", in_pence: 260
     order = Order.new(fake_menu)
     order.menu
     order_so_far = {"Vegetable Rice" => "£2.60", "Total" => "£2.60"}
     expect(order.select("Vegetable Rice")).to eq order_so_far
   end
+
+  context "when user tries to complete the order when they have no items" do
+    it "fails" do
+      fake_menu = double :menu
+      order = Order.new(fake_menu)
+      expect {order.complete}.to raise_error "You have not selected any items."
+    end
+  end
+
+  context "when user tries to send a text and order is not complete" do
+    it "fails" do
+      fake_menu = double :menu
+      order = Order.new(fake_menu)
+      expect {order.text(07777777777)}.to raise_error "Your order is not completed"
+    end
+  end
+
 end
 

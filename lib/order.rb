@@ -25,23 +25,25 @@ class Order
   
   def total
     total = 0
-    @order.each {|item, price|
-      total += @menu.in_pence(item) 
-      price.insert(0, "£") if price[0] != "£"
-    }
+      @order.each { |item, price|
+        total += @menu.in_pence(item) 
+        price.insert(0, "£") if price[0] != "£"
+     }
     @order["Total"] = in_pounds(total)
   end
 
   def receipt
-    @order
+    receipt = Receipt.new(@order)
+    receipt.format
   end
 
   def complete
+    fail "You have not selected any items." if @order.empty?
     return "Thank you! Your order has been placed."
-    # throws an error if there are no items
   end
 
   def text(number) #number is a string representing a phone number
+    fail "Your order is not completed"
     # send a text message
     # throws an error if the order is not complete
   end

@@ -21,7 +21,8 @@ class Menu
 
   def in_pence(item)
     price = @menu[item]
-    price.slice!(0)
+    price.slice!(0) if price != nil
     (price.to_f * 100).round
   end
+
 end

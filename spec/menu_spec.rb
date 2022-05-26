@@ -22,7 +22,6 @@ RSpec.describe Menu do
 
   it "returns the cost in pence as an integer of an item" do
     menu = Menu.new
-    menu = Menu.new
     expect(menu.in_pence("Steamed Rice")).to eq 230
   end
 end                        
