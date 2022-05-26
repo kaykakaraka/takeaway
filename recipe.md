@@ -49,7 +49,7 @@ Consider diagramming out the classes and their relationships. Take care to focus
    │                              │
    └──────────────────────────────┘
 
-class OrderCreator
+class Order
   def initialize(number) #number is a string representing a phone number
     # ...
   end
@@ -87,7 +87,7 @@ class Messenger
   def arrival_time
     #calculates time order will arrive
   end
-  
+
   def text
      # sends a text
      # format is like "Thank you! Your order was placed and will be delivered before 18:52"
@@ -116,7 +116,7 @@ Create examples of the classes being used together in different situations and c
 # EXAMPLE
 
 # 1 - Creates a receipt for an order
-order = OrderCreator.new
+order = Order.new
 order.select("Vegetable Rice")
 order.select("Vegetable Spring Rolls")
 order.select("Thai Red Curry with tofu")
@@ -127,7 +127,7 @@ expect(order.receipt).to eq "Vegetable Rice (2.60),
 
 # 2 - returns a string when order if completed
 
-order = OrderCreator.new
+order = Order.new
 order.menu
 order.select("Vegetable Rice")
 order.select("Vegetable Spring Rolls")
@@ -135,7 +135,7 @@ order.select("Thai Red Curry with tofu")
 expect(order.complete).to eq "Thank you! Your order has been placed."
 
 # 3 - sends a text message for an order
-order = OrderCreator.new
+order = Order.new
 order.menu 
 order.select("Vegetable Rice")
 order.select("Vegetable Spring Rolls")
@@ -147,14 +147,13 @@ expect(order.text).to eq "Thank you! Your order was placed and will be delivered
 "Thank you! Your order was placed and will be delivered before 18:52"
 
 # 4 Shows the order so far when an item is selected (uses receipt invisibly)
-order = OrderCreator.new
-expect(order.select("Vegetable Rice").to eq {"Vegetable Rice": "£2.60",
-                                             "Total" = "£2.60"}
+order = Order.new
+expect(order.select("Vegetable Rice").to eq {"Vegetable Rice": "£2.60", "Total" = "£2.60"}
 
 4. Create Examples as Unit Tests
 
 # 1 - ORDER: Shows a menu
-order = OrderCreator.new(07755440022)
+order = Order.new(07755440022)
 order.menu = {"Thai Green Curry with tofu": "£6.80",
               "Thai Green Curry with vegetables": "£6.30",
               "Thai Red Curry with tofu": "£6.80",
@@ -180,7 +179,7 @@ expect(receipt.price).to eq "13.10"
 # 4 MESSENGER: calculates a time
 
 messenger = Messenger.new(07724405517)
-expect
+expect messenger.arrival_time to eq ???
 
 # 5 MESSENGER: sends a text message
 
