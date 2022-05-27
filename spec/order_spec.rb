@@ -31,6 +31,28 @@ RSpec.describe Order do
     expect(order.in_pounds(1260)).to eq "£12.60"
   end
 
+  it 'creates a receipt' do
+    fake_receipt_class = double :Receipt
+    fake_menu = double :menu
+    expect(fake_menu).to receive(:price).with("Vegetable Rice").and_return("£2.60")
+    expect(fake_menu).to receive(:price).with("Vegetable Spring Rolls").and_return("£3.00")
+    allow(fake_menu).to receive(:in_pence).with("Vegetable Rice").and_return(260)
+    allow(fake_menu).to receive(:in_pence).with("Vegetable Spring Rolls").and_return(300)
+    order = Order.new(fake_menu)
+    order.select("Vegetable Rice")
+    order.select("Vegetable Spring Rolls")
+    expect(fake_receipt_class).to receive(:new)
+      .with({"Vegetable Rice" => "£2.60", "Vegetable Spring Rolls" => "£3.00", "Total" => "£5.60"})
+      .and_return(fake_receipt_class)
+      expect(fake_receipt_class).to receive(:format)
+      .and_return(["Vegetable Rice (£2.60)",
+                    "Vegetable Spring Rolls (£3.00)",
+                    "Total (£5.60)"])
+    expect(order.receipt(fake_receipt_class)).to eq ["Vegetable Rice (£2.60)",
+                                                      "Vegetable Spring Rolls (£3.00)",
+                                                      "Total (£5.60)"]
+  end
+
   context "when user tries to complete the order when they have no items" do
     it "fails" do
       fake_menu = double :menu
@@ -43,10 +65,28 @@ RSpec.describe Order do
     it "fails" do
       fake_menu = double :menu
       fake_client = double :client
+      fake_messenger = double :messenger
       fake_time = double :time, now: Time.new(2022,5,27, 12,11,45) 
       order = Order.new(fake_menu)
-      expect {order.text(fake_client, fake_time)}.to raise_error "Your order is not completed"
+      expect {order.text(fake_client, fake_time, fake_messenger)}.to raise_error "Your order is not completed"
     end
   end
+
+  it "sends a text" do
+    fake_menu = double :menu
+    expect(fake_menu).to receive(:price).with("Vegetable Rice").and_return("£2.60")
+    allow(fake_menu).to receive(:in_pence).with("Vegetable Rice").and_return(260)
+    fake_client = double :client
+    fake_time = double :time
+    fake_messenger = double :messenger, text: "Thank you! Your order was placed and will be delivered before 12:41"
+    expect(fake_messenger).to receive(:new).with(fake_client, fake_time)
+      .and_return(fake_messenger)
+    order = Order.new(fake_menu)
+    order.select("Vegetable Rice")
+    order.complete
+    expect(order.text(fake_client, fake_time, fake_messenger)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
+  end  
+
 end
+
 

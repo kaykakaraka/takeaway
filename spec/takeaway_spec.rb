@@ -44,7 +44,8 @@ RSpec.describe "Takeaway" do
               "Vegetable Spring Rolls (£3.00)",
               "Thai Red Curry with tofu (£6.80)",
               "Total (£12.40)"]
-    expect(order.receipt).to eq receipt
+    receipt_class = Receipt
+    expect(order.receipt(receipt_class)).to eq receipt
   end
 
   it "tells you the order has been placed" do
@@ -67,9 +68,9 @@ RSpec.describe "Takeaway" do
   it "sends a text to confirm the order" do
     menu = Menu.new
     order = Order.new(menu)
+    messenger_class = Messenger
     order.select("Vegetable Rice")
     order.select("Vegetable Spring Rolls")
-    order.receipt
     order.complete
     fake_client = double :client
     fake_time = double :time, now: Time.new(2022,5,27, 12,11,45) 
@@ -83,6 +84,6 @@ RSpec.describe "Takeaway" do
       body: "Thank you! Your order was placed and will be delivered before 12:41"
       )
       .and_return("Thank you! Your order was placed and will be delivered before 12:41")
-    expect(order.text(fake_client, fake_time)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
+    expect(order.text(fake_client, fake_time, messenger_class)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
   end
 end

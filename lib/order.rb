@@ -1,5 +1,6 @@
 require 'menu'
 require 'messenger'
+require 'receipt'
 
 class Order
   def initialize(menu) #menu is an object of the menu class
@@ -34,8 +35,8 @@ class Order
     @order["Total"] = in_pounds(total)
   end
 
-  def receipt
-    receipt = Receipt.new(@order)
+  def receipt(receipt_class)
+    receipt = receipt_class.new(@order)
     receipt.format
   end
 
@@ -45,9 +46,9 @@ class Order
     return "Thank you! Your order has been placed."
   end
 
-  def text(client, time)
+  def text(client, time, messenger_class)
     fail "Your order is not completed" if @complete == false
-    messenger = Messenger.new(client, time)
+    messenger = messenger_class.new(client, time)
     messenger.text
   end
 end
