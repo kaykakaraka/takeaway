@@ -14,14 +14,14 @@ RSpec.describe Messenger do
       body: "Thank you! Your order was placed and will be delivered before 12:41"
       )
       .and_return("Thank you! Your order was placed and will be delivered before 12:41")
-    messenger = Messenger.new(fake_client)
-    expect(messenger.text(fake_time)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
+    messenger = Messenger.new(fake_client, fake_time)
+    expect(messenger.text).to eq "Thank you! Your order was placed and will be delivered before 12:41"
   end
 
   it "calculates the time the delivery will arrive" do
     fake_client = double :client
     fake_time = double :time, now: Time.new(2022,5,27, 12,11,45) 
-    messenger = Messenger.new(fake_client)
+    messenger = Messenger.new(fake_client, fake_time)
     expect(messenger.arrival_time(fake_time)).to eq "12:41"
   end
 end

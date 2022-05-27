@@ -25,6 +25,12 @@ RSpec.describe Order do
     expect(order.select("Vegetable Rice")).to eq order_so_far
   end
 
+  it 'converts an integer to pounds' do
+    fake_menu = double :menu
+    order = Order.new(fake_menu)
+    expect(order.in_pounds(1260)).to eq "£12.60"
+  end
+
   context "when user tries to complete the order when they have no items" do
     it "fails" do
       fake_menu = double :menu
@@ -37,8 +43,9 @@ RSpec.describe Order do
     it "fails" do
       fake_menu = double :menu
       fake_client = double :client
+      fake_time = double :time, now: Time.new(2022,5,27, 12,11,45) 
       order = Order.new(fake_menu)
-      expect {order.text(fake_client)}.to raise_error "Your order is not completed"
+      expect {order.text(fake_client, fake_time)}.to raise_error "Your order is not completed"
     end
   end
 end
