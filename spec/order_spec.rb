@@ -36,10 +36,10 @@ RSpec.describe Order do
   context "when user tries to send a text and order is not complete" do
     it "fails" do
       fake_menu = double :menu
+      fake_client = double :client
       order = Order.new(fake_menu)
-      expect {order.text(07777777777)}.to raise_error "Your order is not completed"
+      expect {order.text(fake_client)}.to raise_error "Your order is not completed"
     end
   end
-
 end
 

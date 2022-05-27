@@ -1,9 +1,11 @@
 require 'menu'
+require 'messenger'
 
 class Order
   def initialize(menu) #menu is an object of the menu class
     @menu = menu
     @order = {}
+    @complete = false
   end
 
   def menu
@@ -39,12 +41,13 @@ class Order
 
   def complete
     fail "You have not selected any items." if @order.empty?
+    @complete = true
     return "Thank you! Your order has been placed."
   end
 
-  def text(number) #number is a string representing a phone number
-    fail "Your order is not completed"
-    # send a text message
-    # throws an error if the order is not complete
+  def text(client)
+    fail "Your order is not completed" if @complete == false
+    messenger = Messenger.new(client)
+    messenger.text
   end
 end

@@ -63,4 +63,25 @@ RSpec.describe "Takeaway" do
     order.select("Vegetable Spring Rolls")
     expect(order.total).to eq "£5.60"
   end
+
+  it "sends a text to confirm the order" do
+    menu = Menu.new
+    order = Order.new(menu)
+    order.select("Vegetable Rice")
+    order.select("Vegetable Spring Rolls")
+    order.receipt
+    order.complete
+    fake_client = double :client
+    from = ENV['TWILIO_NUMBER']
+    to = ENV['MY_NUMBER']
+    expect(fake_client).to receive(:new).with(ENV['TWILIO_ID'], ENV['TWILIO_AUTH_TOKEN']).and_return(fake_client)
+    expect(fake_client).to receive(:messages).and_return(fake_client)
+    expect(fake_client).to receive(:create).with(
+      from: from,
+      to: to,
+      body: "Thank you! Your order was placed and will be delivered before 18:52"
+      )
+      .and_return("Thank you! Your order was placed and will be delivered before 18:52")
+    expect(order.text(fake_client)).to eq "Thank you! Your order was placed and will be delivered before 18:52"
+  end
 end
