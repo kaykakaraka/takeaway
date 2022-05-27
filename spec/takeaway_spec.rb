@@ -2,7 +2,7 @@ require 'order'
 require 'receipt'
 require 'messenger'
 
-RSpec.describe "Takeaway" do
+RSpec.describe "Takeaway integration" do
   
   it "shows the menu" do
     menu = Menu.new
