@@ -4,11 +4,13 @@ class Messenger
     @client = client
   end
 
-  def arrival_time
-    #calculates time order will arrive
+  def arrival_time(time)
+    arrival_time = time.now + 60 * 30
+    return arrival_time.strftime("%k:%M") 
   end
 
-  def text
+  def text(time)
+    arrival = arrival_time(time)
     account_sid = ENV['TWILIO_ID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
     client = @client.new(account_sid, auth_token)
@@ -19,16 +21,15 @@ class Messenger
     client.messages.create(
     from: from,
     to: to,
-    body: "Thank you! Your order was placed and will be delivered before 18:52"
+    body: "Thank you! Your order was placed and will be delivered before #{arrival}"
     )
   end
 end
 
 =begin
 messenger = Messenger.new(Twilio::REST::Client)
-messenger.text
+messenger.text(Time)
 =end
-
 
 
 
