@@ -59,8 +59,7 @@ class OrderForTerminal
 end
 
 
-=begin
+
 order = OrderForTerminal.new(Kernel, Twilio::REST::Client, Receipt, Time, Messenger) 
 order.begin
 order.select_options
-=end

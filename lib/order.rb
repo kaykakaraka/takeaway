@@ -14,9 +14,11 @@ class Order
   end
 
   def select(order)
-    @order.delete("Total")
-    @order[order] = @menu.price(order) #adds the selected item to the order
-    total
+    if @menu.show.include?(order)
+      @order.delete("Total")
+      @order[order] = @menu.price(order) #adds the selected item to the order
+      total
+    end
     return @order
   end
 

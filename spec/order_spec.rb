@@ -5,7 +5,7 @@ hash = {"Thai Green Curry with tofu" => "£6.80",
         "Thai Red Curry with tofu" => "£6.80",
         "Thai Red Curry with vegetables" => "£6.30",
         "Phad Mee Trang" => "£7.10",
-        "vegetable Spring Rolls" => "£3.00",
+        "Vegetable Spring Rolls" => "£3.00",
         "Steamed Rice" => "£2.30",
         "Vegetable Rice" => "£2.60",
         }
@@ -33,7 +33,7 @@ RSpec.describe Order do
 
   it 'creates a receipt' do
     fake_receipt_class = double :Receipt
-    fake_menu = double :menu
+    fake_menu = double :menu, show: hash
     expect(fake_menu).to receive(:price).with("Vegetable Rice").and_return("£2.60")
     expect(fake_menu).to receive(:price).with("Vegetable Spring Rolls").and_return("£3.00")
     allow(fake_menu).to receive(:in_pence).with("Vegetable Rice").and_return(260)
@@ -73,7 +73,7 @@ RSpec.describe Order do
   end
 
   it "sends a text" do
-    fake_menu = double :menu
+    fake_menu = double :menu, show: hash
     expect(fake_menu).to receive(:price).with("Vegetable Rice").and_return("£2.60")
     allow(fake_menu).to receive(:in_pence).with("Vegetable Rice").and_return(260)
     fake_sms_server = double :server
@@ -87,6 +87,14 @@ RSpec.describe Order do
     expect(order.text(fake_sms_server, fake_time, fake_messenger)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
   end  
 
+  it "removes any item that isn't on the menu" do
+    fake_menu = double :menu, show: hash, price: "£2.60", in_pence: 260
+    order = Order.new(fake_menu)
+    order.menu
+    order_so_far = {"Vegetable Rice" => "£2.60", "Total" => "£2.60"}
+    order.select("lemonade")
+    expect(order.select("Vegetable Rice")).to eq order_so_far
+  end
 end
 
 
