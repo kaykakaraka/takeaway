@@ -2,7 +2,7 @@
 
 My version of the takeaway project in Makers Week 2.
 
-# # User Stories
+## User Stories
 
 As a customer
 So that I can check if I want to order something
@@ -23,7 +23,7 @@ So that I am reassured that my order will be delivered on time
 I would like to receive a text such as "Thank you! Your order was placed and will be delivered before 18:52" after I have ordered.
       - this one needs to use the twilio-gem and doubles
 
-# Skills developed
+## Skills developed
 
  - developed a multi-class program 
  - used TDD
@@ -39,7 +39,7 @@ If I had more time, I would:
 If I expanded on the project, I would be interested in:
  - having multiple menus for the user to select from
 
-# Functionality
+## Functionality
 
 Users have to set the following Environmental variables, using their own twilio account:
 
