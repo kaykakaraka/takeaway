@@ -37,11 +37,12 @@ class OrderForTerminal
         if @command == 'select'
           select
         elsif @command == 'receipt'
-          @io.puts(@order.receipt(receipt_class))
+          @io.puts(@order.receipt(@receipt_class))
         elsif @command == 'confirm'
           @io.puts(@order.complete)
         elsif @command == 'text'
-          @order.text(@sms_server, @time, @messenger_class)
+          @io.puts(@order.text(@sms_server, @time, @messenger_class))
+          break
         end
       give_options
       end

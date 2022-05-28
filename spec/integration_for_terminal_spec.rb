@@ -38,7 +38,7 @@ RSpec.describe "intergration with order for terminal class" do
     order_for_terminal.select_options
   end
 
-  xit "allows the user to view their receipt" do
+  it "allows the user to view their receipt" do
     io = double :io
     order_for_terminal = OrderForTerminal.new(io, Twilio::REST::Client, Receipt, Time, Messenger)
     expect(io).to receive(:puts).with(hash)
@@ -58,11 +58,12 @@ RSpec.describe "intergration with order for terminal class" do
     expect(io).to receive(:puts).with(["Vegetable Rice (£2.60)",
                                       "Vegetable Spring Rolls (£3.00)",
                                       "Total (£5.60)"])
+    expect(io).to receive(:gets).and_return("stop")
     order_for_terminal.begin
     order_for_terminal.select_options                                
   end
 
-  xit "allows the user to send a text" do
+  it "allows the user to send a text" do
     io = double :io
     fake_client = double :client
     fake_time = double :time, now: Time.new(2022,5,27, 12,11,45)
@@ -91,8 +92,9 @@ RSpec.describe "intergration with order for terminal class" do
     expect(io).to receive(:gets).and_return("confirm")
     expect(io).to receive(:puts).with("Thank you! Your order has been placed.")
     expect(io).to receive(:gets).and_return("text")
+    expect(io).to receive(:puts).with("Thank you! Your order was placed and will be delivered before 12:41")
     order_for_terminal.begin
-    expect(order_for_terminal.select_options).to_return "Thank you! Your order was placed and will be delivered before 12:41"
+    order_for_terminal.select_options
   end
 
 end
