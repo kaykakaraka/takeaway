@@ -76,7 +76,7 @@ RSpec.describe "intergration with order for terminal class" do
       body: "Thank you! Your order was placed and will be delivered before 12:41"
       )
       .and_return("Thank you! Your order was placed and will be delivered before 12:41")
-    order_for_terminal = OrderForTerminal.new(io, fake_client, Receipt, Time, Messenger)
+    order_for_terminal = OrderForTerminal.new(io, fake_client, Receipt, fake_time, Messenger)
     expect(io).to receive(:puts).with(hash)
     allow(io).to receive(:puts).with("Enter 'select' to make a selection")
     allow(io).to receive(:puts).with("Enter 'receipt' to view your receipt")
@@ -86,10 +86,13 @@ RSpec.describe "intergration with order for terminal class" do
     expect(io).to receive(:gets).and_return("select")
     expect(io).to receive(:puts).with("Please select an item by typing its name")
     expect(io).to receive(:gets).and_return("Vegetable Rice")
+    expect(io).to receive(:puts).with({"Vegetable Rice" => "£2.60", "Total" => "£2.60"})
     expect(io).to receive(:gets).and_return("")
+    expect(io).to receive(:gets).and_return("confirm")
+    expect(io).to receive(:puts).with("Thank you! Your order has been placed.")
     expect(io).to receive(:gets).and_return("text")
     order_for_terminal.begin
-    expect(order_for_terminal.give_options).to eq "Thank you! Your order was placed and will be delivered before 12:41"
+    expect(order_for_terminal.select_options).to_return "Thank you! Your order was placed and will be delivered before 12:41"
   end
 
 end

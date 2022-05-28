@@ -1,7 +1,7 @@
 require 'twilio-ruby'
 class Messenger
-  def initialize(client, time)
-    @client = client
+  def initialize(sms_server, time)
+    @sms_server = sms_server
     @time = time
   end
 
@@ -14,7 +14,7 @@ class Messenger
     arrival = arrival_time(@time)
     account_sid = ENV['TWILIO_ID']
     auth_token = ENV['TWILIO_AUTH_TOKEN']
-    client = @client.new(account_sid, auth_token)
+    client = @sms_server.new(account_sid, auth_token)
 
     from = ENV['TWILIO_NUMBER']
     to = ENV['MY_NUMBER']

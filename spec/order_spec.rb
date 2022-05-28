@@ -64,11 +64,11 @@ RSpec.describe Order do
   context "when user tries to send a text and order is not complete" do
     it "fails" do
       fake_menu = double :menu
-      fake_client = double :client
+      fake_sms_server = double :server
       fake_messenger = double :messenger
       fake_time = double :time, now: Time.new(2022,5,27, 12,11,45) 
       order = Order.new(fake_menu)
-      expect {order.text(fake_client, fake_time, fake_messenger)}.to raise_error "Your order is not completed"
+      expect {order.text(fake_sms_server, fake_time, fake_messenger)}.to raise_error "Your order is not completed"
     end
   end
 
@@ -76,15 +76,15 @@ RSpec.describe Order do
     fake_menu = double :menu
     expect(fake_menu).to receive(:price).with("Vegetable Rice").and_return("£2.60")
     allow(fake_menu).to receive(:in_pence).with("Vegetable Rice").and_return(260)
-    fake_client = double :client
+    fake_sms_server = double :server
     fake_time = double :time
     fake_messenger = double :messenger, text: "Thank you! Your order was placed and will be delivered before 12:41"
-    expect(fake_messenger).to receive(:new).with(fake_client, fake_time)
+    expect(fake_messenger).to receive(:new).with(fake_sms_server, fake_time)
       .and_return(fake_messenger)
     order = Order.new(fake_menu)
     order.select("Vegetable Rice")
     order.complete
-    expect(order.text(fake_client, fake_time, fake_messenger)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
+    expect(order.text(fake_sms_server, fake_time, fake_messenger)).to eq "Thank you! Your order was placed and will be delivered before 12:41"
   end  
 
 end

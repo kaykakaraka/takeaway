@@ -46,9 +46,9 @@ class Order
     return "Thank you! Your order has been placed."
   end
 
-  def text(client, time, messenger_class)
+  def text(sms_server, time, messenger_class)
     fail "Your order is not completed" if @complete == false
-    messenger = messenger_class.new(client, time)
+    messenger = messenger_class.new(sms_server, time)
     messenger.text
   end
 end

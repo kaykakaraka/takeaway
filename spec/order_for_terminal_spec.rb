@@ -5,15 +5,20 @@ require "order_for_terminal"
   "Thai Red Curry with tofu" => "£6.80",
   "Thai Red Curry with vegetables" => "£6.30",
   "Phad Mee Trang" => "£7.10",
-  "vegetable Spring Rolls" => "£3.00",
+  "Vegetable Spring Rolls" => "£3.00",
   "Steamed Rice" => "£2.30",
   "Vegetable Rice" => "£2.60",
   }
   
 RSpec.describe OrderForTerminal do
-   xit "puts the menu" do
-    order_for_terminal = OrderForTerminal.new
+   it "puts the menu" do
     io = double :io
-    expect(io).to_receive(:puts).with(hash)
+    fake_server = double :server
+    fake_receipt_class = double :receipt
+    fake_time = double :time
+    fake_messenger = double :messenger
+    order_for_terminal = OrderForTerminal.new(io, fake_server, fake_receipt_class, fake_time, fake_messenger)
+    expect(io).to receive(:puts).with(hash)
+    order_for_terminal.begin
    end
 end

@@ -6,15 +6,15 @@ require 'messenger'
 
 class OrderForTerminal
 
-  def initialize(io, client, receipt_class, time, messenger_class)
+  def initialize(io, sms_server, receipt_class, time, messenger_class)
    @io = io
-   @client = client
+   @sms_server = sms_server
    @receipt_class = receipt_class
    @time = time
    @messenger_class = messenger_class
   end
 
-  def begin #order is an object from the order class
+  def begin 
     menu = Menu.new
     @order = Order.new(menu)
     menu = @order.menu
@@ -37,11 +37,11 @@ class OrderForTerminal
         if @command == 'select'
           select
         elsif @command == 'receipt'
-          @io.puts(@order.receipt(Receipt))
+          @io.puts(@order.receipt(receipt_class))
         elsif @command == 'confirm'
           @io.puts(@order.complete)
         elsif @command == 'text'
-          @io.puts(@order.text(@client, @time, @messenger_class))
+          @order.text(@sms_server, @time, @messenger_class)
         end
       give_options
       end
@@ -51,8 +51,8 @@ class OrderForTerminal
     @io.puts "Please select an item by typing its name"
     item = @io.gets.chomp
       while !item.empty?
-      @io.puts(@order.select(item))
-      item = @io.gets.chomp
+        @io.puts(@order.select(item))
+        item = @io.gets.chomp
       end
   end
 
