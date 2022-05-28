@@ -32,6 +32,7 @@ My version of the takeaway project in Makers Week 2.
 If I had more time, I would:
  - make it so that menu items can be entered by the user without them needing to use the correct capitalization
  - have the receipt list items with the number of times, e.g. (1 x Vegetable Rice, 2 x Vegetable Spring Rolls)
+ - complete unit tests for `OrderForTerminal` class using mocking 
 
 If I expanded on the project, I would be interested in:
  - having multiple menus for the user to select from
