@@ -36,6 +36,7 @@ If I had more time, I would:
 
 If I expanded on the project, I would be interested in:
  - having multiple menus for the user to select from
+ - allowing users to deselect items
 
 ## Functionality
 
@@ -50,7 +51,7 @@ Users have to set the following Environmental variables, using their own twilio 
 `MY_NUMBER`
 
 
-The program can be run in the terminal by calling
+The program can be run in the terminal, from within the repo, by calling
 
 `ruby ./lib/order_for_terminal.rb`
 
