@@ -33,7 +33,7 @@ If I had more time, I would:
  - make it so that menu items can be entered by the user without them needing to use the correct capitalization
  - have the receipt list items with the number of times, e.g. (1 x Vegetable Rice, 2 x Vegetable Spring Rolls)
  - put 'in_pounds' into a new Format class
- - complete unit tests for `OrderForTerminal` class using mocking 
+ - complete unit tests for `OrderForTerminal` class using mocking, and take out the other classes to be passed in as arguments to make this possible
 
 If I expanded on the project, I would be interested in:
  - having multiple menus for the user to select from
